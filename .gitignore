@@ -1,0 +1,32 @@
+# Bytecode e Caches do Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyd
+.Python
+
+# Ambientes Virtuais
+env/
+venv/
+.venv/
+ENV/
+
+# Diretório e Arquivos Temporários de Impressão (Não subir PDFs para o Git)
+temp_impressoes/
+*.pdf
+
+# Arquivos de Configuração Local e Segredos
+.env
+config.local.json
+
+# Arquivos de Sistema Operacional
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# IDEs e Editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace

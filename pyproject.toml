@@ -1,0 +1,17 @@
+[project]
+name = "geduc-print"
+version = "0.1.0"
+description = "Sistema de Impressão escolar"
+authors = [
+    {name = "Adriano Rosa",email = "adrianorosa02@prof.educacao.sp.gov.br"}
+]
+license = {text = "Free"}
+requires-python = ">=3.14"
+dependencies = [
+    "pypdf (>=6.19.0,<7.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
