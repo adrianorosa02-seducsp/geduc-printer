@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Gestão de Impressões Escolares | E.E. Antônio Reginato</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --badge-bg: #dbeafe;
+      --badge-text: #1e40af;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --warning: #d97706;
+      --warning-light: #fef3c7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+      --shadow-hover: 0 10px 25px rgba(37, 99, 235, 0.12);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding: 24px 20px 60px;
+      line-height: 1.5;
+    }
+
+    /* Layout ampliado para visualização plena de todas as colunas */
+    .container {
+      max-width: 1440px;
+      width: 96%;
+      margin: 0 auto;
+    }
+
+    /* Header DevMaker */
+    header {
+      background: var(--card-bg);
+      padding: 28px 32px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 8px solid var(--accent);
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-titles h1 {
+      font-size: 1.65rem;
+      color: var(--primary);
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .header-titles p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .header-badge {
+      background: var(--primary-light);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Navegação por Abas */
+    .tabs-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 4px;
+    }
+
+    .tab-btn {
+      padding: 12px 24px;
+      background: transparent;
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      background: #ffffff;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .tab-count {
+      background: #e2e8f0;
+      color: #334155;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .tab-btn.active .tab-count {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* Estilos do Formulário */
+    .form-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 8px;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-group label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .input-group label span.req {
+      color: var(--danger);
+    }
+
+    .input-group input,
+    .input-group select,
+    .input-group textarea {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      background-color: #ffffff;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus,
+    .input-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Cards de Seleção Interativa (Formato e Cor) */
+    .selection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .radio-card {
+      position: relative;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .radio-card:hover {
+      border-color: #93c5fd;
+      background: #fff;
+    }
+
+    .radio-card input[type="radio"] {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      accent-color: var(--accent);
+      transform: scale(1.2);
+    }
+
+    .radio-card.selected {
+      border-color: var(--accent);
+      background: var(--primary-light);
+    }
+
+    .radio-card-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .radio-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .radio-card-tag {
+      margin-top: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #0369a1;
+      background: #e0f2fe;
+      padding: 2px 8px;
+      border-radius: 4px;
+      align-self: flex-start;
+    }
+
+    /* Upload de PDF */
+    .drop-zone {
+      border: 2px dashed #cbd5e1;
+      border-radius: 10px;
+      padding: 28px 20px;
+      text-align: center;
+      background: #f8fafc;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--accent);
+      background: var(--primary-light);
+    }
+
+    .drop-zone input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .drop-zone-icon {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    .file-preview {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: #f1f5f9;
+      border-radius: 8px;
+      margin-top: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .file-preview.show {
+      display: flex;
+    }
+
+    .file-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #1e293b;
+      font-weight: 600;
+    }
+
+    /* Botão de Envio */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      color: #ffffff;
+      border: none;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+      transition: all 0.2s;
+    }
+
+    .btn-submit:hover {
+      background: linear-gradient(135deg, var(--primary-hover), var(--primary));
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Painel de Gestão (Dashboard) */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .metric-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-val {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Estados dinâmicos da impressora */
+    .status-printer-ready {
+      color: #16a34a !important;
+      font-size: 1.2rem !important;
+      font-weight: 800;
+    }
+
+    .status-printer-error {
+      color: #dc2626 !important;
+      font-size: 1.15rem !important;
+      font-weight: 800;
+      animation: pulse-danger 2s infinite ease-in-out;
+    }
+
+    .status-printer-busy {
+      color: #0284c7 !important;
+      font-size: 1.2rem !important;
+      font-weight: 800;
+    }
+
+    .status-printer-waiting {
+      color: #d97706 !important;
+      font-size: 1.2rem !important;
+      font-weight: 800;
+    }
+
+    @keyframes pulse-danger {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.02); }
+    }
+
+    /* Tabela da Fila de Impressão */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+      min-width: 100%;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1180px; /* Garante espaço folgado para todas as 9 colunas */
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+
+    th {
+      background: #f8fafc;
+      padding: 16px 18px;
+      font-weight: 700;
+      color: #334155;
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    tr:hover td {
+      background-color: #fbfcfe;
+    }
+
+    /* Badges de Status da Solicitação */
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-pendente {
+      background: var(--warning-light);
+      color: var(--warning);
+    }
+
+    .status-liberado {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .status-impresso {
+      background: var(--success-light);
+      color: var(--success);
+    }
+
+    .status-erro {
+      background: var(--danger-light);
+      color: var(--danger);
+      animation: pulse-danger 2s infinite ease-in-out;
+    }
+
+    .status-imprimindo {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 700;
+    }
+
+    .badge-tag {
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 0.78rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .date-urgent {
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    /* Botões de Ação na Tabela */
+    .btn-action {
+      padding: 8px 14px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-liberar {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-liberar:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-concluir {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .btn-concluir:hover {
+      background: #15803d;
+    }
+
+    .btn-view {
+      background: #f1f5f9;
+      color: #334155;
+      text-decoration: none;
+    }
+
+    .btn-view:hover {
+      background: #e2e8f0;
+    }
+
+    /* Botão de Atualizar Fila */
+    .btn-refresh {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-refresh:hover {
+      background: #f8fafc;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-refresh.spinning span {
+      display: inline-block;
+      animation: spin 1s infinite linear;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Alertas e Mensagens */
+    .alert {
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+      font-size: 0.95rem;
+    }
+
+    .alert.show {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .alert-success {
+      background: var(--success-light);
+      color: #14532d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .alert-info {
+      background: #e0f2fe;
+      color: #075985;
+      border: 1px solid #bae6fd;
+    }
+
+    @media (max-width: 900px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .tabs-nav {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Topo Institucional DevMaker -->
+  <header>
+    <div class="header-titles">
+      <span class="header-badge">E.E. Antônio Reginato • Reprografia</span>
+      <h1>Portal de Gestão de Impressões</h1>
+      <p>Solicitação de cópias de avaliações, simulados SARESP e materiais pedagógicos</p>
+    </div>
+    <div>
+      <span class="header-badge" style="background:#f1f5f9; color:#475569;">
+        🖨️ Brother MFC-L8610CDW
+      </span>
+    </div>
+  </header>
+
+  <!-- Navegação entre Visão do Professor e Gestão da Escola -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('tab-solicitar')">
+      📝 Nova Solicitação (Professor)
+    </button>
+    <button class="tab-btn" onclick="switchTab('tab-gestao')">
+      📊 Fila & Liberação (Gestão)
+      <span class="tab-count" id="badge-pendentes">0</span>
+    </button>
+  </div>
+
+  <!-- ABA 1: FORMULÁRIO DO PROFESSOR -->
+  <div id="tab-solicitar" class="tab-pane active">
+    <div id="feedback-alert" class="alert alert-success">
+      ✓ Solicitação gravada com sucesso! A fila de impressão já foi atualizada na planilha da gestão.
+    </div>
+
+    <form id="printForm" onsubmit="handleFormSubmit(event)">
+      <div class="form-card">
+        <h2 class="section-title">1. Dados do Solicitante e Cronograma</h2>
+        
+        <div class="form-grid-2">
+          <div class="input-group">
+            <label for="professorName">Nome do Professor(a) / Solicitante <span class="req">*</span></label>
+            <input type="text" id="professorName" required placeholder="Ex: Adriano Justino Rosa" />
+          </div>
+
+          <div class="input-group">
+            <label for="dataNecessidade">Para quando é a impressão? (Data e Horário de Aplicação) <span class="req">*</span></label>
+            <input type="datetime-local" id="dataNecessidade" required />
+          </div>
+        </div>
+
+        <div class="form-grid-3">
+          <div class="input-group">
+            <label for="turma">Turma / Segmento <span class="req">*</span></label>
+            <input type="text" id="turma" required placeholder="Ex: 9º Ano A, 6º Ano B, 3º EM" />
+          </div>
+
+          <div class="input-group">
+            <label for="disciplina">Disciplina / Descrição da Prova <span class="req">*</span></label>
+            <input type="text" id="disciplina" required placeholder="Ex: Matemática - Simulado SARESP" />
+          </div>
+
+          <div class="input-group">
+            <label for="copias">Número de Cópias <span class="req">*</span></label>
+            <input type="number" id="copias" min="1" max="500" value="35" required />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h2 class="section-title">2. Formato de Impressão e Acabamento</h2>
+
+        <label style="font-size:0.88rem; font-weight:600; color:#334155; margin-bottom:10px; display:block;">
+          Tipo de Acabamento / Encadernação <span class="req">*</span>
+        </label>
+        <div class="selection-grid">
+          <div class="radio-card selected" onclick="selectRadioCard(this, 'acabamento', 'livreto')">
+            <input type="radio" name="acabamento" value="livreto" checked />
+            <div class="radio-card-title">📖 Formato Livreto</div>
+            <div class="radio-card-desc">2 páginas por face em A4 horizontal. Ideal para cadernos de prova dobráveis ao meio.</div>
+            <span class="radio-card-tag">Econômico • Duplex Borda Curta</span>
+          </div>
+
+          <div class="radio-card" onclick="selectRadioCard(this, 'acabamento', 'duplex')">
+            <input type="radio" name="acabamento" value="duplex" />
+            <div class="radio-card-title">📑 Frente e Verso Comum</div>
+            <div class="radio-card-desc">1 página por face em folha A4 vertical (Retrato), virando na borda longa padrão.</div>
+            <span class="radio-card-tag">Duplex Borda Longa</span>
+          </div>
+
+          <div class="radio-card" onclick="selectRadioCard(this, 'acabamento', 'simplex')">
+            <input type="radio" name="acabamento" value="simplex" />
+            <div class="radio-card-title">📄 Apenas Frente</div>
+            <div class="radio-card-desc">Impressão tradicional em uma única face da folha (uso reservado para folhas avulsas).</div>
+            <span class="radio-card-tag" style="background:#fee2e2; color:#b91c1c;">Simples</span>
+          </div>
+        </div>
+
+        <label style="font-size:0.88rem; font-weight:600; color:#334155; margin-bottom:10px; display:block;">
+          Modo de Cor <span class="req">*</span>
+        </label>
+        <div class="selection-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+          <div class="radio-card selected" onclick="selectRadioCard(this, 'cor', 'monocromatico')">
+            <input type="radio" name="cor" value="monocromatico" checked />
+            <div class="radio-card-title">⚫ Preto e Branco (Monocromático)</div>
+            <div class="radio-card-desc">Padrão institucional para avaliações e simulados. Menor custo de toner.</div>
+          </div>
+
+          <div class="radio-card" onclick="selectRadioCard(this, 'cor', 'colorido')">
+            <input type="radio" name="cor" value="colorido" />
+            <div class="radio-card-title">🎨 Colorido</div>
+            <div class="radio-card-desc">Apenas para gráficos, mapas ou materiais com necessidade pedagógica de cor.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h2 class="section-title">3. Arquivo da Prova (PDF)</h2>
+        
+        <div class="drop-zone" id="dropZone">
+          <div class="drop-zone-icon">📁</div>
+          <p style="font-weight:700; color:var(--primary); margin-bottom:4px;">Arraste e solte o arquivo PDF aqui</p>
+          <p style="font-size:0.85rem; color:var(--text-muted);">ou clique para selecionar do computador (Tamanho máx: 25MB)</p>
+          <input type="file" id="pdfFileInput" accept="application/pdf" onchange="handleFileSelected(this)" required />
+        </div>
+
+        <div class="file-preview" id="filePreview">
+          <div class="file-info">
+            <span style="font-size:1.4rem;">📑</span>
+            <div>
+              <div id="fileNameDisplay">prova_matematica_9ano.pdf</div>
+              <div id="fileSizeDisplay" style="font-size:0.75rem; color:var(--text-muted);">1.4 MB • Pronto para envio</div>
+            </div>
+          </div>
+          <button type="button" onclick="clearFile()" style="background:none; border:none; color:var(--danger); font-size:1.2rem; cursor:pointer;">✕</button>
+        </div>
+
+        <div class="input-group" style="margin-top:20px;">
+          <label for="observacoes">Observações para a Reprografia / Gestão</label>
+          <textarea id="observacoes" rows="2" placeholder="Ex: Grampear no meio se possível; Folhas de gabarito anexadas na última página."></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="btnSubmit">
+        <span>🚀 Enviar Pedido para Fila de Impressão</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- ABA 2: PAINEL DE GESTÃO E FILA (COORDENAÇÃO) -->
+  <div id="tab-gestao" class="tab-pane">
+    <div class="metrics-bar">
+      <div class="metric-card">
+        <div class="metric-label">Solicitações na Fila</div>
+        <div class="metric-val" id="metric-pendentes">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Cópias Pendentes</div>
+        <div class="metric-val" id="metric-copias">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Impressas no Bimestre</div>
+        <div class="metric-val" id="metric-impressas">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Status da Impressora</div>
+        <div class="metric-val" id="metric-status-impressora">
+          <span class="status-printer-ready">● Conectada</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:12px; flex-wrap:wrap;">
+      <h3 style="font-size:1.15rem; color:var(--primary); font-weight:700; display:flex; align-items:center; gap:8px;">
+        📋 Fila de Impressão e Liberação
+      </h3>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span id="sync-indicator" style="font-size:0.8rem; color:var(--text-muted);">Sincronizando com a nuvem...</span>
+        <button type="button" class="btn-refresh" onclick="carregarFilaDoBackend(true)" id="btnRefresh" title="Recarregar fila da nuvem">
+          <span>🔄</span> Atualizar Fila
+        </button>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 80px;">ID</th>
+            <th style="width: 170px;">Data de Aplicação</th>
+            <th style="width: 180px;">Solicitante</th>
+            <th style="width: 210px;">Turma / Disciplina</th>
+            <th style="width: 140px;">Acabamento</th>
+            <th style="width: 80px;">Cor</th>
+            <th style="width: 100px;">Cópias</th>
+            <th style="width: 170px;">Status</th>
+            <th style="width: 160px;">Ações da Gestão</th>
+          </tr>
+        </thead>
+        <tbody id="queueTableBody">
+          <!-- Linhas geradas dinamicamente via JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // =========================================================================
+  // 🔗 CONFIGURAÇÃO DO BACKEND (GOOGLE APPS SCRIPT)
+  // URL ativa implantada no Google Apps Script:
+  // =========================================================================
+  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyfIsn7cLoMNYUGIdVoGswTADhy-w3QWsbnZjRYhTvsvjFYd1fktniwrTEBvzO-tncB/exec";
+  // =========================================================================
+
+  // Dados da fila em memória
+  let queueData = [];
+  let pollingInterval = null;
+
+  let selectedFileBase64 = null;
+  let selectedFileName = "";
+
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+    if (tabId === 'tab-solicitar') {
+      document.querySelectorAll('.tab-btn')[0].classList.add('active');
+      if (pollingInterval) clearInterval(pollingInterval);
+    } else {
+      document.querySelectorAll('.tab-btn')[1].classList.add('active');
+      carregarFilaDoBackend();
+      // Inicia auto-polling a cada 12 segundos enquanto estiver na aba de Gestão
+      if (!pollingInterval) {
+        pollingInterval = setInterval(() => carregarFilaDoBackend(false), 12000);
+      }
+    }
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  function selectRadioCard(element, groupName, value) {
+    const parent = element.parentElement;
+    parent.querySelectorAll('.radio-card').forEach(card => card.classList.remove('selected'));
+    element.classList.add('selected');
+    const radio = element.querySelector(`input[value="${value}"]`);
+    if (radio) radio.checked = true;
+  }
+
+  function handleFileSelected(input) {
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      selectedFileName = file.name;
+      document.getElementById('fileNameDisplay').textContent = file.name;
+      document.getElementById('fileSizeDisplay').textContent = (file.size / (1024 * 1024)).toFixed(2) + " MB • Pronto para envio";
+      document.getElementById('filePreview').classList.add('show');
+
+      // Leitura em Base64 para envio via Apps Script
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        selectedFileBase64 = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function clearFile() {
+    document.getElementById('pdfFileInput').value = '';
+    document.getElementById('filePreview').classList.remove('show');
+    selectedFileBase64 = null;
+    selectedFileName = "";
+  }
+
+  // Formatação amigável de Data e Hora no padrão brasileiro DD/MM/YYYY HH:mm
+  function formatarDataHora(val) {
+    if (!val) return "-";
+    try {
+      const d = new Date(val);
+      if (!isNaN(d.getTime())) {
+        const dia = String(d.getDate()).padStart(2, '0');
+        const mes = String(d.getMonth() + 1).padStart(2, '0');
+        const ano = d.getFullYear();
+        const horas = String(d.getHours()).padStart(2, '0');
+        const minutos = String(d.getMinutes()).padStart(2, '0');
+
+        const strVal = String(val).trim();
+        // Se a data original tiver hora definida (formato datetime-local, ISO com hora ou formato com espaço)
+        if (strVal.includes('T') && !strVal.endsWith('T00:00:00.000Z') && !strVal.endsWith('T03:00:00.000Z')) {
+          return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
+        } else if (strVal.includes(' ') && strVal.includes(':')) {
+          return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
+        } else if (strVal.includes('T03:00:00.000Z') || strVal.endsWith('T00:00:00.000Z')) {
+          // Data pura vinda do Google Sheets sem horário específico
+          return `${dia}/${mes}/${ano}`;
+        }
+        return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
+      }
+    } catch (e) {}
+
+    // Fallback de strings puras
+    const str = String(val).replace('T', ' ').replace('Z', '').split('.')[0];
+    const parts = str.split(' ');
+    const dateParts = parts[0].split('-');
+    if (dateParts.length === 3) {
+      const dataBr = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+      if (parts[1]) {
+        const timeParts = parts[1].split(':');
+        return `${dataBr} ${timeParts[0]}:${timeParts[1]}`;
+      }
+      return dataBr;
+    }
+    return val;
+  }
+
+  async function handleFormSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnSubmit');
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Enviando para o Google Drive e Planilha...';
+
+    const professor = document.getElementById('professorName').value;
+    const dataNecessidade = document.getElementById('dataNecessidade').value;
+    const turma = document.getElementById('turma').value;
+    const disciplina = document.getElementById('disciplina').value;
+    const copias = parseInt(document.getElementById('copias').value, 10);
+    const acabamento = document.querySelector('input[name="acabamento"]:checked').value;
+    const cor = document.querySelector('input[name="cor"]:checked').value;
+    const observacoes = document.getElementById('observacoes').value;
+
+    const payload = {
+      professor: professor,
+      dataNecessidade: dataNecessidade,
+      turma: turma,
+      disciplina: disciplina,
+      copias: copias,
+      acabamento: acabamento === 'livreto' ? 'Formato Livreto' : (acabamento === 'duplex' ? 'Frente e Verso' : 'Apenas Frente'),
+      cor: cor === 'monocromatico' ? 'P&B' : 'Colorido',
+      fileName: selectedFileName || "documento.pdf",
+      fileBase64: selectedFileBase64 || "",
+      observacoes: observacoes
+    };
+
+    if (WEBAPP_URL) {
+      try {
+        await fetch(WEBAPP_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {
+        console.warn("Aviso no envio assíncrono:", err);
+      }
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<span>🚀 Enviar Pedido para Fila de Impressão</span>';
+    
+    const alertBox = document.getElementById('feedback-alert');
+    alertBox.classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    document.getElementById('printForm').reset();
+    clearFile();
+    
+    // Atualiza a data padrão
+    setDefaultDateTime();
+
+    setTimeout(() => {
+      alertBox.classList.remove('show');
+      switchTab('tab-gestao');
+    }, 1500);
+  }
+
+  async function carregarFilaDoBackend(manual = false) {
+    const refreshBtn = document.getElementById('btnRefresh');
+    const syncIndicator = document.getElementById('sync-indicator');
+    if (manual && refreshBtn) refreshBtn.classList.add('spinning');
+    if (syncIndicator) syncIndicator.textContent = "Sincronizando...";
+
+    if (WEBAPP_URL) {
+      try {
+        const res = await fetch(WEBAPP_URL);
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          queueData = data.map(item => ({
+            id: item.ID || "SOL-000",
+            dataPedido: item.Data_Pedido || "",
+            dataNecessidade: item.Data_Necessidade || "",
+            professor: item.Professor || "",
+            turma: item.Turma || "",
+            disciplina: item.Disciplina || "",
+            copias: parseInt(item.Copias_Solicitadas || 35, 10),
+            copiasImpressas: parseInt(item.Copias_Impressas || 0, 10),
+            acabamento: item.Acabamento || "Formato Livreto",
+            cor: item.Cor || "P&B",
+            arquivoNome: item.Nome_Arquivo || "arquivo.pdf",
+            linkDrive: item.Link_Drive_PDF || "#",
+            status: String(item.Status || "Pendente").trim()
+          }));
+          if (syncIndicator) {
+            const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            syncIndicator.textContent = `Atualizado às ${horaAtual}`;
+          }
+        }
+      } catch (e) {
+        console.warn("Modo offline / dados locais ativos:", e);
+        if (syncIndicator) syncIndicator.textContent = "Offline (usando cache local)";
+      }
+    }
+
+    if (manual && refreshBtn) {
+      setTimeout(() => refreshBtn.classList.remove('spinning'), 600);
+    }
+    renderQueueTable();
+  }
+
+  // Atualiza o Status da Impressora dinamicamente com base nas respostas do backend/agente
+  function updatePrinterStatusMetric() {
+    const metricVal = document.getElementById('metric-status-impressora');
+    if (!metricVal) return;
+
+    // 1. Procura se há algum erro de hardware ativo reportado pelo Agente / Spooler
+    const itemErro = queueData.find(it => {
+      const s = String(it.status || "").toLowerCase();
+      return s.includes("erro") || s.includes("falha") || s.includes("preso") || s.includes("sem papel") || s.includes("tampa") || s.includes("offline");
+    });
+
+    // 2. Procura se há algum item sendo impresso neste instante
+    const itemImprimindo = queueData.find(it => {
+      const s = String(it.status || "").toLowerCase();
+      return s.includes("imprimindo") || s.includes("processando");
+    });
+
+    // 3. Procura se há itens liberados aguardando o Agente iniciar
+    const itemLiberado = queueData.find(it => {
+      const s = String(it.status || "").toLowerCase();
+      return s.includes("liberado") || s.includes("liberada");
+    });
+
+    if (itemErro) {
+      metricVal.innerHTML = `<span class="status-printer-error" title="Atenção: falha detectada em ${itemErro.id}. Verifique a bandeja ou simulador.">⚠️ ${itemErro.status}</span>`;
+    } else if (itemImprimindo) {
+      metricVal.innerHTML = `<span class="status-printer-busy" title="Impressão em andamento: ${itemImprimindo.id}">🖨️ Imprimindo (${itemImprimindo.id})</span>`;
+    } else if (itemLiberado) {
+      metricVal.innerHTML = `<span class="status-printer-waiting" title="Trabalho aguardando processamento pelo agente">⏳ Fila Ativa (${itemLiberado.id})</span>`;
+    } else {
+      metricVal.innerHTML = `<span class="status-printer-ready" title="Impressora conectada e pronta para novas tarefas">● Pronta / Ociosa</span>`;
+    }
+  }
+
+  function updateMetrics() {
+    const pendentes = queueData.filter(item => {
+      const s = String(item.status || "").toLowerCase();
+      return s === 'pendente' || s.includes('erro') || s.includes('liberado') || s.includes('imprimindo');
+    });
+    document.getElementById('metric-pendentes').textContent = pendentes.length;
+    document.getElementById('badge-pendentes').textContent = pendentes.length;
+    
+    const copiasPendentes = pendentes.reduce((acc, cur) => acc + (cur.copias - (cur.copiasImpressas || 0)), 0);
+    document.getElementById('metric-copias').textContent = Math.max(0, copiasPendentes);
+
+    const concluidos = queueData.filter(item => {
+      const s = String(item.status || "").toLowerCase();
+      return s.includes('concluid') || s.includes('impresso');
+    });
+    const copiasImpressas = concluidos.reduce((acc, cur) => acc + cur.copias, 0);
+    document.getElementById('metric-impressas').textContent = copiasImpressas;
+
+    updatePrinterStatusMetric();
+  }
+
+  function renderQueueTable() {
+    const tbody = document.getElementById('queueTableBody');
+    tbody.innerHTML = '';
+    updateMetrics();
+
+    // Ordena priorizando itens com Erro, depois Liberados/Imprimindo, depois por data
+    const sorted = [...queueData].sort((a, b) => {
+      const aErr = String(a.status || "").toLowerCase().includes('erro') ? -1 : 0;
+      const bErr = String(b.status || "").toLowerCase().includes('erro') ? -1 : 0;
+      if (aErr !== bErr) return aErr - bErr;
+      return new Date(a.dataNecessidade) - new Date(b.dataNecessidade);
+    });
+
+    sorted.forEach(item => {
+      const tr = document.createElement('tr');
+      
+      const hoje = new Date().toISOString().split('T')[0];
+      const isUrgent = item.dataNecessidade && item.dataNecessidade.slice(0, 10) <= hoje;
+      const dataFormatada = formatarDataHora(item.dataNecessidade);
+
+      let statusBadge = `<span class="badge-status status-pendente">Pendente</span>`;
+      const st = String(item.status || "").toLowerCase();
+
+      if (st.includes('erro') || st.includes('falha') || st.includes('preso') || st.includes('sem papel')) {
+        statusBadge = `<span class="badge-status status-erro" title="${item.status}">⚠️ ${item.status}</span>`;
+      } else if (st.includes('imprimindo') || st.includes('processando')) {
+        statusBadge = `<span class="badge-status status-imprimindo">🖨️ ${item.status}</span>`;
+      } else if (st.includes('liberado') || st.includes('liberada')) {
+        statusBadge = `<span class="badge-status status-liberado">Liberado</span>`;
+      } else if (st.includes('concluid') || st.includes('impresso')) {
+        statusBadge = `<span class="badge-status status-impresso">Concluído</span>`;
+      }
+
+      // Exibição de cópias: se houve falha ou impressão parcial, exibe o progresso
+      let copiasDisplay = `<strong>${item.copias}</strong>`;
+      if ((st.includes('erro') || st.includes('imprimindo')) && item.copiasImpressas !== undefined && item.copiasImpressas > 0) {
+        copiasDisplay = `<strong>${item.copiasImpressas} / ${item.copias}</strong><br><small style="color:var(--text-muted);">feitas</small>`;
+      }
+
+      tr.innerHTML = `
+        <td><strong>${item.id}</strong></td>
+        <td>
+          <span class="${isUrgent ? 'date-urgent' : ''}" style="display:inline-flex; align-items:center; gap:6px; font-weight:600; white-space:nowrap;">
+            ${isUrgent ? '⚠️ ' : '📅 '}${dataFormatada}
+          </span>
+        </td>
+        <td><strong>${item.professor}</strong></td>
+        <td><strong>${item.turma}</strong><br><small style="color:#64748b;">${item.disciplina}</small></td>
+        <td>${item.acabamento}</td>
+        <td><span class="badge-tag">${item.cor}</span></td>
+        <td>${copiasDisplay}</td>
+        <td>${statusBadge}</td>
+        <td>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            ${(item.status === 'Pendente' || st.includes('erro') || st.includes('falha')) ? `
+              <button class="btn-action btn-liberar" onclick="liberarImpressao('${item.id}')" title="Enviar para fila da Brother">
+                🖨️ Liberar
+              </button>
+            ` : (st.includes('liberado') || st.includes('imprimindo') ? `
+              <button class="btn-action btn-concluir" onclick="concluirImpressao('${item.id}')" title="Confirmar conclusão manualmente">
+                ✓ Concluir
+              </button>
+            ` : `<small style="color:#16a34a; font-weight:700;">✓ Finalizado</small>`)}
+            <a href="${item.linkDrive || '#'}" target="_blank" class="btn-action btn-view" title="Abrir arquivo PDF no Google Drive">📄 PDF</a>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  async function liberarImpressao(id) {
+    const item = queueData.find(q => q.id === id);
+    if (item) {
+      if (confirm(`Liberar impressão de ${item.copias} cópias em '${item.acabamento}' para a impressora Brother MFC-L8610CDW?`)) {
+        item.status = "Liberado";
+        renderQueueTable();
+
+        if (WEBAPP_URL) {
+          try {
+            await fetch(WEBAPP_URL, {
+              method: "POST",
+              mode: "no-cors",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "updateStatus",
+                id: id,
+                status: "Liberado"
+              })
+            });
+            setTimeout(carregarFilaDoBackend, 1200);
+          } catch (err) {
+            console.error("Erro ao sincronizar liberação com a nuvem:", err);
+          }
+        }
+      }
+    }
+  }
+
+  async function concluirImpressao(id) {
+    const item = queueData.find(q => q.id === id);
+    if (item) {
+      const confirmadas = prompt(`Confirme a quantidade de cópias impressas:`, item.copias);
+      if (confirmadas !== null) {
+        item.status = "Concluído";
+        item.copiasImpressas = parseInt(confirmadas, 10);
+        renderQueueTable();
+
+        if (WEBAPP_URL) {
+          try {
+            await fetch(WEBAPP_URL, {
+              method: "POST",
+              mode: "no-cors",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "updateStatus",
+                id: id,
+                status: "Concluído",
+                copiasImpressas: item.copiasImpressas
+              })
+            });
+            setTimeout(carregarFilaDoBackend, 1200);
+          } catch (err) {
+            console.error("Erro ao sincronizar conclusão com a nuvem:", err);
+          }
+        }
+      }
+    }
+  }
+
+  function setDefaultDateTime() {
+    const now = new Date();
+    // Ajusta para o horário local para preencher o input datetime-local
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    const formatted = now.toISOString().slice(0, 16);
+    const input = document.getElementById('dataNecessidade');
+    if (input) {
+      input.min = formatted;
+      input.value = formatted;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setDefaultDateTime();
+    carregarFilaDoBackend();
+  });
+</script>
+
+</body>
+</html>

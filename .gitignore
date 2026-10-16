@@ -13,7 +13,10 @@ ENV/
 
 # Diretório e Arquivos Temporários de Impressão (Não subir PDFs para o Git)
 temp_impressoes/
+simulador_saida/
+simulador_estado.json
 *.pdf
+*.prn
 
 # Arquivos de Configuração Local e Segredos
 .env
