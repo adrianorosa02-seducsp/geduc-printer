@@ -170,3 +170,5 @@ geduc-printer/
 
 3. **Como alternar rapidamente entre impressora real e simulador:**
    - Adicione o parâmetro `--simulador` ou altere `MODO_SIMULADOR = True` no topo de [`agente_fila_impressao.py`](agent/agente_fila_impressao.py).
+
+25/11/2026 - Coletato repositorio Geduc computador impressora
